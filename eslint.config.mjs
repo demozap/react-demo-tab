@@ -1,27 +1,28 @@
 import eslint from '@eslint/js';
 import eslintConfigPrettier from 'eslint-config-prettier';
-import eslintPluginImport from 'eslint-plugin-import';
+import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript';
+import * as eslintPluginImportX from 'eslint-plugin-import-x';
+import eslintPluginJsxA11y from 'eslint-plugin-jsx-a11y';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 import eslintPluginReact from 'eslint-plugin-react';
-import eslintPluginReactHooks from 'eslint-plugin-react-hooks';
-import eslintPluginJsxA11y from 'eslint-plugin-jsx-a11y';
-
-import tseslint from 'typescript-eslint';
+import * as eslintPluginReactHooks from 'eslint-plugin-react-hooks';
+import * as tseslint from 'typescript-eslint';
 
 export default tseslint.config(
   eslint.configs.recommended,
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
-  eslintPluginImport.flatConfigs.recommended,
+
+  eslintPluginImportX.flatConfigs.recommended,
+  eslintPluginImportX.flatConfigs.typescript,
   ...tseslint.configs.strictTypeChecked,
   ...tseslint.configs.stylisticTypeChecked,
-  // Uncomment once released - https://github.com/facebook/react/pull/30774
-  // eslintPluginReactHooks.configs.recommended,
-  eslintPluginReact.configs.flat.recommended,
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
   eslintPluginJsxA11y.flatConfigs.recommended,
+  eslintPluginReact.configs.flat.recommended,
   eslintPluginPrettierRecommended,
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   eslintConfigPrettier,
+  // https://eslint.org/docs/latest/use/configure/configuration-files#excluding-files-with-ignores
+  // When in their own config block without files, it tells ESLint to ignore those files.
+  // When in a config block with files, it stops that specific config block from affecting those ignored files.
   {
     ignores: ['!.*', 'node_modules', 'dist', 'compiled', 'build'],
   },
@@ -29,14 +30,11 @@ export default tseslint.config(
     languageOptions: {
       parserOptions: {
         projectService: true,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        tsconfigRootDir: import.meta.name,
+        tsconfigRootDir: import.meta.dirname,
       },
     },
     settings: {
-      'import/resolver': {
-        typescript: { project: './tsconfig.dev.json' },
-      },
+      'import-x/resolver-next': [createTypeScriptImportResolver()],
       react: { version: 'detect' },
     },
   },
@@ -44,24 +42,19 @@ export default tseslint.config(
     files: ['**/*.{js,ts,jsx,tsx}'],
 
     plugins: {
-      // Remove once released - https://github.com/facebook/react/pull/30774
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       'react-hooks': eslintPluginReactHooks,
     },
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     rules: {
-      // Remove once released - https://github.com/facebook/react/pull/30774
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       ...eslintPluginReactHooks.configs.recommended.rules,
 
-      'react/jsx-sort-props': ['error', { callbacksLast: true, shorthandFirst: true }],
       'react/react-in-jsx-scope': 'off',
 
-      'no-undef': 'off',
       'prefer-template': 'error',
       'no-nested-ternary': 'error',
       'no-unneeded-ternary': 'error',
+      'spaced-comment': 'error',
+      'no-console': 'error',
 
       '@typescript-eslint/ban-ts-comment': ['error', { 'ts-expect-error': 'allow-with-description' }],
       '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
@@ -70,17 +63,13 @@ export default tseslint.config(
       '@typescript-eslint/no-unnecessary-condition': 'error',
       '@typescript-eslint/no-confusing-void-expression': ['error', { ignoreArrowShorthand: true }],
       '@typescript-eslint/restrict-plus-operands': 'off',
+      '@typescript-eslint/restrict-template-expressions': 'off',
+      '@typescript-eslint/consistent-type-imports': 'error',
       '@typescript-eslint/naming-convention': [
         'error',
         {
           selector: 'typeAlias',
           format: ['PascalCase'],
-        },
-        {
-          selector: 'variable',
-          types: ['boolean'],
-          format: ['PascalCase'],
-          prefix: ['is', 'should', 'has', 'can', 'did', 'will'],
         },
         {
           // Generic type parameter must start with letter T, followed by any uppercase letter.
@@ -90,8 +79,8 @@ export default tseslint.config(
         },
       ],
 
-      'import/no-default-export': 'error',
-      'import/order': [
+      'import-x/no-default-export': 'error',
+      'import-x/order': [
         'error',
         {
           groups: ['builtin', 'external', 'internal', 'parent', 'sibling'],
@@ -107,7 +96,7 @@ export default tseslint.config(
   {
     files: ['stories/**/*'],
     rules: {
-      'import/no-default-export': 'off',
+      'import-x/no-default-export': 'off',
     },
   },
 );

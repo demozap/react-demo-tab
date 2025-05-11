@@ -1,4 +1,4 @@
-import { Preview } from '@storybook/react';
+import type { Preview } from '@storybook/react';
 
 const preview: Preview = {
   parameters: {
@@ -14,5 +14,5 @@ const preview: Preview = {
   },
 };
 
-// eslint-disable-next-line import/no-default-export
+// eslint-disable-next-line import-x/no-default-export
 export default preview;

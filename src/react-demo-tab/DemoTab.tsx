@@ -7,8 +7,8 @@ import 'react-tabs/style/react-tabs.css';
 import styleImgCSS from './img/css.png';
 import codeImg from './img/jsx.png';
 import styleImgSass from './img/sass.png';
-import { LocalStorage } from './types';
-import { DemoTabProps } from './types.public';
+import type { LocalStorage } from './types';
+import type { DemoTabProps } from './types.public';
 
 const localStorageKey = 'react-demo-tab';
 
