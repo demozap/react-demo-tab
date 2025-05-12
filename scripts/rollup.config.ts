@@ -74,5 +74,5 @@ const rollupConfig = defineConfig([
   },
 ]);
 
-// eslint-disable-next-line
+// eslint-disable-next-line import-x/no-default-export
 export default rollupConfig;
