@@ -9,7 +9,7 @@ import packageJson from '../package.json' with { type: 'json' };
 
 import tsConfig from './tsconfig.base.json' with { type: 'json' };
 
-const isProduction = process.env.NODE_ENV === 'production';
+const IS_PRODUCTION = process.env.NODE_ENV === 'production';
 
 const PATH_INPUT_FILE = 'src/index.ts';
 const PATH_TSCONFIG_BUILD = 'scripts/tsconfig.build.json';
@@ -22,7 +22,7 @@ const rollupConfig = defineConfig([
         file: packageJson.main,
         name: packageJson.name,
         format: 'umd',
-        sourcemap: !isProduction,
+        sourcemap: !IS_PRODUCTION,
         globals: {
           react: 'React',
           'react-dom': 'ReactDOM',
@@ -34,14 +34,14 @@ const rollupConfig = defineConfig([
       {
         file: packageJson.module,
         format: 'esm',
-        sourcemap: !isProduction,
+        sourcemap: !IS_PRODUCTION,
       },
     ],
     plugins: [
       commonjs(),
       typescript({
         tsconfig: PATH_TSCONFIG_BUILD,
-        sourceMap: !isProduction,
+        sourceMap: !IS_PRODUCTION,
       }),
       terser({
         output: { comments: false },
