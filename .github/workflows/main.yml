@@ -6,7 +6,7 @@ on:
       - main
 
 env:
-  NODE_VERSION: '20.x'
+  NODE_VERSION: '24.x'
   FOLDER_PATH_STORYBOOK_BUILD: ./build-storybook-static
 
 jobs:
