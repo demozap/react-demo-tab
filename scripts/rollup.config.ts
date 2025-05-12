@@ -29,6 +29,8 @@ const rollupConfig = defineConfig([
           'react-tabs': 'react-tabs',
           'react-syntax-highlighter': 'react-syntax-highlighter',
           '@rehooks/local-storage': '@rehooks/local-storage',
+          'react/jsx-runtime': 'jsxRuntime',
+          'react-syntax-highlighter/dist/esm/styles/prism': 'prism',
         },
       },
       {
@@ -57,6 +59,8 @@ const rollupConfig = defineConfig([
       ...Object.keys(packageJson.peerDependencies),
       ...Object.keys(packageJson.dependencies),
       'react-tabs/style/react-tabs.css',
+      'react/jsx-runtime',
+      'react-syntax-highlighter/dist/esm/styles/prism',
     ],
   },
   {
